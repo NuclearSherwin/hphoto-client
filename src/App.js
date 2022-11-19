@@ -1,6 +1,8 @@
 import { Routes, Route, Link } from 'react-router-dom';
+import Login from './components/LoginAndRegister';
 import Nav from './components/Nav';
 import Post from './components/Post';
+import Register from './components/Register';
 
 function App() {
   return (
@@ -12,8 +14,11 @@ function App() {
         {/* <Route path="/signup" element={<SignUp />} />
         {/* <Route path="/dashboard" component={<Dashboard />} /> */}
         <Route path="/posts" element={<Post />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
-      <Post />
+      {/* <Post /> */}
+      {/* <Login /> */}
+      <Register />
     </div>
   );
 }
