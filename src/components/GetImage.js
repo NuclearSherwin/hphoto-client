@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import { useState, useEffect } from "react";
 import Image from "./Image";
 
@@ -6,7 +5,7 @@ export default function GetImages() {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    let api = `https://api.unsplash.com/photos?client_id=Q0ZCUaQLBEAdR823Ee63Z0flCp6Py0h4cSDiGH30Mcg`;
+    let api = `https://api.unsplash.com/photos?client_id=${process.env.REACT_APP_UNFLASH_API_KEY}`;
     const fetchImages = async () => {
       const response = await fetch(api);
       const data = await response.json();

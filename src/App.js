@@ -17,6 +17,7 @@ function App() {
         {/* <Route path="/dashboard" component={<Dashboard />} /> */}
         <Route path="/posts" element={<GetImages />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/your-posts' element={<Post />} />
       </Routes>
       {/* <Post /> */}
       {/* <Login /> */}
