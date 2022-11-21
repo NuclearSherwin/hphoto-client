@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { useState, useEffect } from "react";
+import { useAsyncError } from "react-router-dom";
+import { ImageContext } from "../App";
 
 export default function SearchField() {
-  const [searchValue, setSearchValue] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
+  // const { fetchData } = useContext(ImageContext);
 
-  const handleInputChange = (e) => {
-    setSearchValue(e.target.value)
-  }
+  // const handleInputChange = (e) => {
+  //   setSearchValue(e.target.value);
+  // };
+
+  // const handleSearch = (e) => {
+  //   if (e.key === "Enter") {
+  //     setSearchValue("");
+  //   }
+  // };
+
+  const [searchValue, setSearchValue] = useState('')
+  
+  
 
   return (
     <>
@@ -13,9 +27,11 @@ export default function SearchField() {
         <div className="relative items-center ">
           <input
             placeholder="Search"
+            type="search"
+            // value={searchValue}
+            // onChange={handleInputChange}
+            // onKeyDown={handleSearch}
             className="bg-gray-200 rounded-full px-12 py-2 outline-none w-96"
-            value={searchValue}
-            onChange={handleInputChange}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
