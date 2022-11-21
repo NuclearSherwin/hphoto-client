@@ -1,25 +1,23 @@
 import { useContext } from "react";
 import { useState, useEffect } from "react";
-import { useAsyncError } from "react-router-dom";
-import { ImageContext } from "../App";
+import {ImageContext} from "../App";
 
 export default function SearchField() {
-  // const [searchValue, setSearchValue] = useState("");
-  // const { fetchData } = useContext(ImageContext);
+  const [searchValue, setSearchValue] = useState("");
+  const { fetchData }  = useContext(ImageContext);
 
-  // const handleInputChange = (e) => {
-  //   setSearchValue(e.target.value);
-  // };
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+  };
 
-  // const handleSearch = (e) => {
-  //   if (e.key === "Enter") {
-  //     setSearchValue("");
-  //   }
-  // };
-
-  const [searchValue, setSearchValue] = useState('')
-  
-  
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      fetchData(
+        `search/photos?page=1&query=${searchValue}&client_id=${process.env.REACT_APP_UNFLASH_API_KEY}`
+      );
+      setSearchValue("");
+    }
+  };
 
   return (
     <>
@@ -28,9 +26,9 @@ export default function SearchField() {
           <input
             placeholder="Search"
             type="search"
-            // value={searchValue}
-            // onChange={handleInputChange}
-            // onKeyDown={handleSearch}
+            value={searchValue}
+            onChange={handleInputChange}
+            onKeyDown={handleSearch}
             className="bg-gray-200 rounded-full px-12 py-2 outline-none w-96"
           />
           <svg

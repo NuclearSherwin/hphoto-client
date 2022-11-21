@@ -12,7 +12,6 @@ import Register from "./components/Register";
 // create context
 export const ImageContext = createContext();
 
-
 function App() {
   const { response, isLoading, error, fetchData } = useAxios(
     `search/photos?page=1&query=dogs&client_id=${process.env.REACT_APP_UNFLASH_API_KEY}`
@@ -22,31 +21,31 @@ function App() {
     response,
     isLoading,
     error,
-    fetchData
-  }
+    fetchData,
+  };
 
   console.log(response);
 
   return (
     <div>
-      {/* Navbar */}
-      <Nav />
-      <Routes>
-        {/* <Route path="/signin" element={<LoginWithGoogle />} /> */}
-        {/* <Route path="/signup" element={<SignUp />} />
+      <ImageContext.Provider value={value}>
+        {/* Navbar */}
+        <Nav />
+        <Routes>
+          {/* <Route path="/signin" element={<LoginWithGoogle />} /> */}
+          {/* <Route path="/signup" element={<SignUp />} />
         {/* <Route path="/dashboard" component={<Dashboard />} /> */}
-        <Route path="/posts" element={<GetImages />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/your-posts" element={<Post />} />
-      </Routes>
-      {/* <Post /> */}
-      {/* <Login /> */}
-      {/* <Register /> */}
-      <div>
-        <ImageContext.Provider value={value}>
-          <Images  />
-        </ImageContext.Provider>
-      </div>
+          <Route path="/posts" element={<GetImages />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/your-posts" element={<Post />} />
+        </Routes>
+        {/* <Post /> */}
+        {/* <Login /> */}
+        {/* <Register /> */}
+        <div>
+          <Images />
+        </div>
+      </ImageContext.Provider>
     </div>
   );
 }
