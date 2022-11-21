@@ -4,7 +4,7 @@ import {ImageContext} from "../App";
 
 export default function SearchField() {
   const [searchValue, setSearchValue] = useState("");
-  const { fetchData }  = useContext(ImageContext);
+  const { fetchData, setSearchImage }  = useContext(ImageContext);
 
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
@@ -16,6 +16,7 @@ export default function SearchField() {
         `search/photos?page=1&query=${searchValue}&client_id=${process.env.REACT_APP_UNFLASH_API_KEY}`
       );
       setSearchValue("");
+      setSearchImage(searchValue)
     }
   };
 

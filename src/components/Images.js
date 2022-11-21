@@ -4,12 +4,12 @@ import Img from "./img";
 import Skeleton from "./Skeleton";
 
 const Images = () => {
-  const { response, isLoading } = useContext(ImageContext);
+  const { response, isLoading, searchImage } = useContext(ImageContext);
 
   return (
     <div className="mt-16">
       <h1 className="text-center mt-6 underline text-2xl">
-        Result for something
+        Result for {searchImage || 'something' }
       </h1>
       {/* alight items and grid for items */}
       <div
