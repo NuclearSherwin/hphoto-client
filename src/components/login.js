@@ -20,6 +20,10 @@ const Login = () => {
           userName: username,
           password: password,
         }),
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json; charset=UTF-8",
+        },
       });
 
       let resJson = await res.json();

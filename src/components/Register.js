@@ -13,26 +13,57 @@ const Register = () => {
   const [passwordConfirmation, setRegisterPasswordConfirmation] = useState("");
   const [message, setMessage] = useState("");
 
+  // validate fields
+  const [emailError, setEmailError] = useState("")
+  const [firstNameError, setFirstNameError] = useState("")
+  const [lastNameError, setLastNameError] = useState("")
+  const [userNameError, setUserNameError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+  const [confirmPassError, setConfirmPassError] = useState("")
+
+  const validate = () => {
+    const errors = {}
+    if (email === "")
+    errors.email = "email is required";
+    if (userName === "")
+    errors.firstName = "First name is required";
+    if (lastName === "")
+    errors.lastName = "Last name is required";
+    if (userName === "")
+    errors.userName = "username is required";
+    if (password === "")
+    errors.firstName = "Password is required";
+    if (passwordConfirmation === "")
+    errors.firstName = "Confirm password's not match";
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  }
+
+  
+
   let handleRegisterSubmit = async (e) => {
     e.preventDefault();
-
     // api
     const api = "https://localhost:7178/api/Users/register";
     try {
-      //   const formData = new FormData();
+      const errors = validate();
 
-      //   formData.append("email", email);
-      //   formData.append("firstName", firstName);
-      //   formData.append("lastName", lastName);
-      //   formData.append("username", userName);
-      //   formData.append("password", password);
-      //   formData.append("passwordConfirmation", passwordConfirmation);
-
-      //   let result = await fetch(api, {
-      //     method: "POST",
-      //     body: formData,
-      //   });
-      //   console.log(result);
+      if (errors) {
+        setEmailError(errors.email)
+        setFirstNameError(errors.firstName)
+        setLastNameError(errors.lastName)
+        setUserNameError(errors.userName)
+        setPasswordError(errors.password)
+        setConfirmPassError(errors.confirmPassError)
+      }
+      else {
+        setEmailError("")
+        setFirstNameError("")
+        setLastNameError("")
+        setUserNameError("")
+        setPasswordError("")
+        setConfirmPassError("")
+      }
 
       let res = await fetch(api, {
         method: "POST",
@@ -62,8 +93,7 @@ const Register = () => {
         setRegisterPasswordConfirmation("");
         setMessage("Sign up successfully!");
         // window.location.reload();
-        navigate('/posts');
-        
+        navigate("/posts");
       } else {
         setMessage("Some error ocurred");
       }
@@ -77,7 +107,8 @@ const Register = () => {
         <div className="hidden md:inline-flex flex-col flex-1 space-y-1">
           <p className="text-6xl text-blue-500 font-bold">HPhoto</p>
           <p className="font-medium text-lg leading-1 text-pink-400">
-            Explore your interests, meet new friends & expand your horizons
+            Explore your interests, meet new friends & expand yourmessage
+            horizons
           </p>
         </div>
         {/* {isLogin ? <LoginForm /> : <SignUpForm />} */}
@@ -111,14 +142,16 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setRegisterEmail(e.target.value)}
               ></input>
+              <p className="text-red-500 text-sm">{emailError}</p>
               <input
-                type="text"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
+                type="text"
                 placeholder="First Name"
                 name="firstName"
                 value={firstName}
                 onChange={(e) => setRegisterFirstName(e.target.value)}
               ></input>
+              <p className="text-red-500 text-sm">{firstNameError}</p>
               <input
                 type="text"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
@@ -127,6 +160,7 @@ const Register = () => {
                 value={lastName}
                 onChange={(e) => setRegisterLastName(e.target.value)}
               ></input>
+              <p className="text-red-500 text-sm">{lastNameError}</p>
               <input
                 type="text"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
@@ -135,6 +169,7 @@ const Register = () => {
                 value={userName}
                 onChange={(e) => setRegisterUserName(e.target.value)}
               ></input>
+              <p className="text-red-500 text-sm">{userNameError}</p>
               <input
                 type="password"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
@@ -143,6 +178,7 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setRegisterPassword(e.target.value)}
               ></input>
+              <p className="text-red-500 text-sm">{passwordError}</p>
               <input
                 type="password"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
@@ -153,6 +189,7 @@ const Register = () => {
                   setRegisterPasswordConfirmation(e.target.value)
                 }
               ></input>
+              <p className="text-red-500 text-sm">{confirmPassError}</p>
               <button
                 type="submit"
                 className="rounded-2xl m-4 text-blue-400 bg-white w-3/5 px-4 py-2 shadow-md hover:text-white hover:bg-blue-400 transition duration-200 ease-in"
@@ -163,7 +200,8 @@ const Register = () => {
           </form>
           <div className="inline-block border-[1px] justify-center w-20 border-white border-solid"></div>
           <p className="text-white mt-4 text-sm">Already have an account?</p>
-          <Link to={'/login'}
+          <Link
+            to={"/login"}
             className="text-white mb-4 text-sm font-medium cursor-pointer"
             //   onClick={() => setIsLogin(true)}
           >
