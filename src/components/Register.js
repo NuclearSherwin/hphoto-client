@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [email, setRegisterEmail] = useState("");
   const [firstName, setRegisterFirstName] = useState("");
   const [lastName, setRegisterLastName] = useState("");
@@ -11,6 +15,7 @@ const Register = () => {
 
   let handleRegisterSubmit = async (e) => {
     e.preventDefault();
+
     // api
     const api = "https://localhost:7178/api/Users/register";
     try {
@@ -57,6 +62,8 @@ const Register = () => {
         setRegisterPasswordConfirmation("");
         setMessage("Sign up successfully!");
         // window.location.reload();
+        navigate('/posts');
+        
       } else {
         setMessage("Some error ocurred");
       }
@@ -84,13 +91,13 @@ const Register = () => {
           </h3>
           <div className="flex space-x-2 m-4 items-center justify-center">
             <div className="socialIcon border-white">
-              <i class="fa-brands fa-facebook"></i>
+              <i class="fa-brands fa-facebook fa-2x"></i>
             </div>
             <div className="socialIcon border-white">
-              <i class="fa-brands fa-github"></i>
+              <i class="fa-brands fa-github fa-2x"></i>
             </div>
             <div className="socialIcon border-white">
-              <i class="fa-brands fa-google"></i>
+              <i class="fa-brands fa-google fa-2x"></i>
             </div>
           </div>
           {/* Inputs */}
@@ -156,12 +163,12 @@ const Register = () => {
           </form>
           <div className="inline-block border-[1px] justify-center w-20 border-white border-solid"></div>
           <p className="text-white mt-4 text-sm">Already have an account?</p>
-          <p
+          <Link to={'/login'}
             className="text-white mb-4 text-sm font-medium cursor-pointer"
             //   onClick={() => setIsLogin(true)}
           >
             Sign In to your Account?
-          </p>
+          </Link>
           <div className="message">{message ? <p>{message}</p> : null} </div>
         </div>
       </main>

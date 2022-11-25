@@ -57,6 +57,10 @@ const Nav = () => {
               <Link to={"/register"}>Register</Link>
             </div>
           </div>
+          <button onClick={() => {
+            localStorage.removeItem('token')
+          }} 
+          className="bg-orange-500">Logout</button>
         </div>
       </nav>
     </>
