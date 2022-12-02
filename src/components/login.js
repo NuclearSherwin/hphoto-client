@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -94,12 +94,12 @@ const Login = () => {
         {/* ----- */}
           <div className="inline-block border-[1px] justify-center w-20 border-blue-400 border-solid"></div>
           <p className="text-blue-400 mt-4 text-sm">Don't have an account?</p>
-          <p
+          <Link to={'/register'}
             className="text-blue-400 mb-4 text-sm font-medium cursor-pointer"
             onClick={() => setIsLogin(false)}
           >
             Create a New Account?
-          </p>
+          </Link>
           <div className="message">{message ? <p>{message}</p> : null} </div>
         </div>
         {/* {isLogin ? <LoginForm /> : <SignUpForm />} */}

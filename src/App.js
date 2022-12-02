@@ -8,7 +8,9 @@ import Login from "./components/login";
 import Nav from "./components/Nav";
 import Post from "./components/Post";
 import PostList from "./components/PostList";
+import IndexComponent from "./components/posts/index.component";
 import Register from "./components/Register";
+import TagIndex from "./components/tags/tag_index";
 
 // create context
 export const ImageContext = createContext();
@@ -16,11 +18,11 @@ export const ImageContext = createContext();
 function App() {
   const navigate = useNavigate();
   // local store
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate('/register')
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!localStorage.getItem("token")) {
+  //     navigate('/register')
+  //   }
+  // }, []);
 
   const [searchImage, setSearchImage] = useState("");
 
@@ -48,15 +50,16 @@ function App() {
           <Route path="/login" element={<Login />} />
           {/* <Route path="/signup" element={<SignUp />} />
         {/* <Route path="/dashboard" component={<Dashboard />} /> */}
-          <Route path="/posts" element={<GetImages />} />
+          <Route path="/" index element={<GetImages />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/your-posts" element={<Post />} />
+          <Route path="/your-posts" element={<IndexComponent />} />
+          <Route path="/topics" element={<TagIndex />} />
         </Routes>
         {/* <Post /> */}
         {/* <Login /> */}
         {/* <Register /> */}
         <div>
-          <Images />
+          {/* <Images /> */}
         </div>
       </ImageContext.Provider>
     </div>
