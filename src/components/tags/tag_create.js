@@ -22,13 +22,11 @@ const TagCreate = () => {
   const onChange = (e) => {
     setTag({ ...tag, [e.target.name]: e.target.value });
 
-    if (e.target.value.name === "name")
+    if (e.target.name === "name")
       error.name =
-        e.target.value.length === 0 ? "Topics' name is required!" : "";
-
-    if (e.target.value.name === "description")
-      error.description =
-        e.target.value.length === 0 ? "Description is required!" : "";
+        e.target.value.length === 0 ? "Topic's name is required!" : "";
+    if (e.target.name === "description")
+      error.description = e.target.value.length === 0 ? "Topic's description is required!" : "";
 
     setError({ ...error });
   };
@@ -39,6 +37,8 @@ const TagCreate = () => {
     error.name = tag.name.length === 0 ? "Topic's name is required!" : "";
     error.description =
       tag.description.length === 0 ? "Topic's description is required!" : "";
+
+    setError({ ...error });
 
     validate = Object.values(error).every((x) => x === "");
 
@@ -86,6 +86,9 @@ const TagCreate = () => {
               onChange={(e) => onChange(e)}
               className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
+            {error.description && (
+              <small className="text-sm text-red-500">{error.description}</small>
+            )}
           </div>
           <div className="mb-4">
             <label>Rating</label>
