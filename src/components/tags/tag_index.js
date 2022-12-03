@@ -40,7 +40,7 @@ const TagIndex = () => {
         <td className="py-4 px-6">{tag.rating}</td>
         <td className="py-4 px-6">
           <Link
-            to={"/edit/"}
+            to={"/topics-edit/" + tag.id}
             className="font-medium mr-1 text-blue-600 dark:text-blue-500 hover:underline"
           >
             Edit

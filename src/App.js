@@ -10,6 +10,9 @@ import Post from "./components/Post";
 import PostList from "./components/PostList";
 import IndexComponent from "./components/posts/index.component";
 import Register from "./components/Register";
+import TagCreate from "./components/tags/tag_create";
+import TagEdit from "./components/tags/tag_edit";
+
 import TagIndex from "./components/tags/tag_index";
 
 // create context
@@ -54,6 +57,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/your-posts" element={<IndexComponent />} />
           <Route path="/topics" element={<TagIndex />} />
+          <Route path="/topics-create" element={<TagCreate />} />
+          <Route path="/topics-edit/:id" element={<TagEdit />} />
         </Routes>
         {/* <Post /> */}
         {/* <Login /> */}

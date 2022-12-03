@@ -13,7 +13,7 @@ export const getTagById = async (TagId) =>
 
 // create Tag
 export const createTag = async (Tag) => 
-    await axios.Tag(`${BASE_URL}/Tags`, Tag);
+    await axios.post(`${BASE_URL}/Tags`, Tag);
 
 // update a Tag
 export const updateTag = async (TagId, Tag) => 
