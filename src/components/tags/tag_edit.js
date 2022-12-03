@@ -59,11 +59,11 @@ const TagEdit = () => {
 
   const onChange = (e) => {
     setTag({ ...tag, [e.target.name]: e.target.value });
-    if (e.target.value.name === "name")
+    if (e.target.name === "name")
       error.name =
         e.target.value.length === 0 ? "Topics' name is required!" : "";
 
-    if (e.target.value.name === "description")
+    if (e.target.name === "description")
       error.description =
         e.target.value.length === 0 ? "Description is required!" : "";
 
@@ -98,6 +98,9 @@ const TagEdit = () => {
                 onChange={(e) => onChange(e)}
                 className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
               ></input>
+              {error.description && (
+                <small className="text-sm text-red-500">{error.description}</small>
+              )}
             </div>
             <div className="mb-4">
               <label>Rating</label>

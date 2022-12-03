@@ -34,7 +34,7 @@ const TagCreate = () => {
   // validate input
   const validateInput = () => {
     let validate = true;
-    error.name = tag.name.length === 0 ? "Topic's name is required!" : "";
+    error.name = tag.name.length === 0 ? "Topics's name is required!" : "";
     error.description =
       tag.description.length === 0 ? "Topic's description is required!" : "";
 
@@ -49,6 +49,7 @@ const TagCreate = () => {
   const onSubmit = (e) => {
     if (validateInput) {
       e.preventDefault();
+      
       createTag(tag)
         .then((res) => {
           navigate("/");
