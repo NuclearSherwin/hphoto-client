@@ -4,12 +4,12 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import GetImages from "./components/GetImage";
 import useAxios from "./components/hooks/useAxios";
 import Images from "./components/Images";
-import Login from "./components/login";
+import Login from "./components/users/login";
 import Nav from "./components/Nav";
 import Post from "./components/Post";
 import PostList from "./components/PostList";
 import IndexComponent from "./components/posts/index.component";
-import Register from "./components/Register";
+import Register from "./components/users/register";
 import TagCreate from "./components/tags/tag_create";
 import TagEdit from "./components/tags/tag_edit";
 

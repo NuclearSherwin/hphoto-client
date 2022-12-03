@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const initErrors = {
+  email: "",
+  firstName: "",
+  lastName: "",
+  userName: "",
+  password: "",
+  passwordConfirmation: "",
+};
+
 const Register = () => {
   const navigate = useNavigate();
 
@@ -14,32 +23,25 @@ const Register = () => {
   const [message, setMessage] = useState("");
 
   // validate fields
-  const [emailError, setEmailError] = useState("")
-  const [firstNameError, setFirstNameError] = useState("")
-  const [lastNameError, setLastNameError] = useState("")
-  const [userNameError, setUserNameError] = useState("")
-  const [passwordError, setPasswordError] = useState("")
-  const [confirmPassError, setConfirmPassError] = useState("")
+  const [emailError, setEmailError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [userNameError, setUserNameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPassError, setConfirmPassError] = useState("");
 
   const validate = () => {
-    const errors = {}
-    if (email === "")
-    errors.email = "email is required";
-    if (userName === "")
-    errors.firstName = "First name is required";
-    if (lastName === "")
-    errors.lastName = "Last name is required";
-    if (userName === "")
-    errors.userName = "username is required";
-    if (password === "")
-    errors.firstName = "Password is required";
+    const errors = {};
+    if (email === "") errors.email = "email is required";
+    if (firstName === "") errors.firstName = "First name is required";
+    if (lastName === "") errors.lastName = "Last name is required";
+    if (userName === "") errors.userName = "username is required";
+    if (password === "") errors.password = "Password is required";
     if (passwordConfirmation === "")
-    errors.firstName = "Confirm password's not match";
+      errors.passwordConfirmation = "Confirm password does not match";
 
     return Object.keys(errors).length === 0 ? null : errors;
-  }
-
-  
+  };
 
   let handleRegisterSubmit = async (e) => {
     e.preventDefault();
@@ -49,20 +51,19 @@ const Register = () => {
       const errors = validate();
 
       if (errors) {
-        setEmailError(errors.email)
-        setFirstNameError(errors.firstName)
-        setLastNameError(errors.lastName)
-        setUserNameError(errors.userName)
-        setPasswordError(errors.password)
-        setConfirmPassError(errors.confirmPassError)
-      }
-      else {
-        setEmailError("")
-        setFirstNameError("")
-        setLastNameError("")
-        setUserNameError("")
-        setPasswordError("")
-        setConfirmPassError("")
+        setEmailError(errors.email);
+        setFirstNameError(errors.firstName);
+        setLastNameError(errors.lastName);
+        setUserNameError(errors.userName);
+        setPasswordError(errors.password);
+        setConfirmPassError(errors.confirmPassError);
+      } else {
+        setEmailError("");
+        setFirstNameError("");
+        setLastNameError("");
+        setUserNameError("");
+        setPasswordError("");
+        setConfirmPassError("");
       }
 
       let res = await fetch(api, {
@@ -107,8 +108,7 @@ const Register = () => {
         <div className="hidden md:inline-flex flex-col flex-1 space-y-1">
           <p className="text-6xl text-blue-500 font-bold">HPhoto</p>
           <p className="font-medium text-lg leading-1 text-pink-400">
-            Explore your interests, meet new friends & expand yourmessage
-            horizons
+            Explore your interests, meet new photos & expand your ideas horizons
           </p>
         </div>
         {/* {isLogin ? <LoginForm /> : <SignUpForm />} */}
@@ -120,7 +120,7 @@ const Register = () => {
           <h3 className="text-xl font-semibold text-white pt-2">
             Create Account!
           </h3>
-          <div className="flex space-x-2 m-4 items-center justify-center">
+          {/* <div className="flex space-x-2 m-4 items-center justify-center">
             <div className="socialIcon border-white">
               <i class="fa-brands fa-facebook fa-2x"></i>
             </div>
@@ -130,7 +130,7 @@ const Register = () => {
             <div className="socialIcon border-white">
               <i class="fa-brands fa-google fa-2x"></i>
             </div>
-          </div>
+          </div> */}
           {/* Inputs */}
           <form onSubmit={handleRegisterSubmit} className="text-black">
             <div className="flex flex-col items-center justify-center mt-2">
@@ -142,7 +142,7 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setRegisterEmail(e.target.value)}
               ></input>
-              <p className="text-red-500 text-sm">{emailError}</p>
+              <p className="text-white text-sm">{emailError}</p>
               <input
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
                 type="text"
@@ -151,7 +151,7 @@ const Register = () => {
                 value={firstName}
                 onChange={(e) => setRegisterFirstName(e.target.value)}
               ></input>
-              <p className="text-red-500 text-sm">{firstNameError}</p>
+              <p className="text-white text-sm">{firstNameError}</p>
               <input
                 type="text"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
@@ -160,7 +160,7 @@ const Register = () => {
                 value={lastName}
                 onChange={(e) => setRegisterLastName(e.target.value)}
               ></input>
-              <p className="text-red-500 text-sm">{lastNameError}</p>
+              <p className="text-white text-sm">{lastNameError}</p>
               <input
                 type="text"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
@@ -169,7 +169,7 @@ const Register = () => {
                 value={userName}
                 onChange={(e) => setRegisterUserName(e.target.value)}
               ></input>
-              <p className="text-red-500 text-sm">{userNameError}</p>
+              <p className="text-white text-sm">{userNameError}</p>
               <input
                 type="password"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
@@ -178,7 +178,7 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setRegisterPassword(e.target.value)}
               ></input>
-              <p className="text-red-500 text-sm">{passwordError}</p>
+              <p className="text-white text-sm">{passwordError}</p>
               <input
                 type="password"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
@@ -189,7 +189,7 @@ const Register = () => {
                   setRegisterPasswordConfirmation(e.target.value)
                 }
               ></input>
-              <p className="text-red-500 text-sm">{confirmPassError}</p>
+              <p className="text-white text-sm">{confirmPassError}</p>
               <button
                 type="submit"
                 className="rounded-2xl m-4 text-blue-400 bg-white w-3/5 px-4 py-2 shadow-md hover:text-white hover:bg-blue-400 transition duration-200 ease-in"
