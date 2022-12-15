@@ -199,10 +199,10 @@ const Register = () => {
             </div>
           </form>
           <div className="inline-block border-[1px] justify-center w-20 border-white border-solid"></div>
-          <p className="text-white mt-4 text-sm">Already have an account?</p>
+          <p className="text-white mt-4 text-sm hover:underline">Already have an account?</p>
           <Link
             to={"/login"}
-            className="text-white mb-4 text-sm font-medium cursor-pointer"
+            className="text-white mb-4 text-sm font-medium cursor-pointer hover:underline"
             //   onClick={() => setIsLogin(true)}
           >
             Sign In to your Account?

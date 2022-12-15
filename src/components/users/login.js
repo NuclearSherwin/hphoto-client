@@ -124,9 +124,9 @@ const Login = () => {
         
         {/* ----- */}
           <div className="inline-block border-[1px] justify-center w-20 border-blue-400 border-solid"></div>
-          <p className="text-blue-400 mt-4 text-sm">Don't have an account?</p>
+          <p className="text-blue-400 mt-4 text-sm hover:underline">Don't have an account?</p>
           <Link to={'/register'}
-            className="text-blue-400 mb-4 text-sm font-medium cursor-pointer"
+            className="text-blue-400 mb-4 text-sm font-medium cursor-pointer hover:underline"
             onClick={() => setIsLogin(false)}
           >
             Create a New Account?
