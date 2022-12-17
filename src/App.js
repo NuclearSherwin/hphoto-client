@@ -3,18 +3,14 @@ import { createContext, useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import GetImages from "./components/GetImage";
 import useAxios from "./components/hooks/useAxios";
-import Images from "./components/Images";
 import Login from "./components/users/login";
 import Nav from "./components/Nav";
-import Post from "./components/Post";
-import PostList from "./components/PostList";
 import IndexComponent from "./components/posts/index.component";
 import Register from "./components/users/register";
 import TagCreate from "./components/tags/tag_create";
 import TagEdit from "./components/tags/tag_edit";
-
 import TagIndex from "./components/tags/tag_index";
-import Posts from "./components/Posts";
+import PostsCreate from "./components/posts/create.component";
 
 // create context
 export const ImageContext = createContext();
@@ -60,7 +56,7 @@ function App() {
           <Route path="/topics" element={<TagIndex />} />
           <Route path="/topics-create" element={<TagCreate />} />
           <Route path="/topics-edit/:id" element={<TagEdit />} />
-          <Route path="/posts" element={<Posts />} />
+          <Route path="/posts-create" element={<PostsCreate />} />
         </Routes>
         {/* <Post /> */}
         {/* <Login /> */}

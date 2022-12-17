@@ -26,7 +26,8 @@ const TagCreate = () => {
       error.name =
         e.target.value.length === 0 ? "Topic's name is required!" : "";
     if (e.target.name === "description")
-      error.description = e.target.value.length === 0 ? "Topic's description is required!" : "";
+      error.description =
+        e.target.value.length === 0 ? "Topic's description is required!" : "";
 
     setError({ ...error });
   };
@@ -49,7 +50,7 @@ const TagCreate = () => {
   const onSubmit = (e) => {
     if (validateInput) {
       e.preventDefault();
-      
+
       createTag(tag)
         .then((res) => {
           navigate("/");
@@ -88,7 +89,9 @@ const TagCreate = () => {
               className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
             {error.description && (
-              <small className="text-sm text-red-500">{error.description}</small>
+              <small className="text-sm text-red-500">
+                {error.description}
+              </small>
             )}
           </div>
           <div className="mb-4">

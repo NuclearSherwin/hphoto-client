@@ -3,12 +3,12 @@ import { createPost } from "./functions/post2_crud";
 import axios from "axios";
 
 const initValues = {
-    description: "",
+  description: "",
   userId: 0,
   tagId: 0,
   imagePath: "",
-  imageSrc: null,
   imageFile: null,
+  imageSrc: null,
 };
 
 const Posts = () => {
@@ -76,7 +76,7 @@ const Posts = () => {
     
     const response = await axios({
         method: 'post',
-        url: 'https://localhost:7178/api/post2',
+        url: 'https://localhost:7178/api/posts',
         data: formData,
         headers: {
             'Content-Type': `multipart/form-data`,
