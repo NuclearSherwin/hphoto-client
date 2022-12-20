@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { createPost } from "../functions/post_crud";
 import axios from "axios";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createPost } from "../functions/post_crud";
+
+const defaultImageSrc = null;
 
 const initValues = {
   description: "",
   userId: 0,
   tagId: 0,
+  createDate: "",
   imagePath: "",
   imageFile: null,
   imageSrc: null,
@@ -14,126 +17,190 @@ const initValues = {
 
 const initErrors = {
   description: "",
-  userId: 0,
-  tagId: 0,
-  imagePath: "",
+  userId: "",
+  tagId: "",
+  createDate: "",
   imageFile: null,
-  imageSrc: null,
 };
 
-const PostsCreate = () => {
-  const [post, setPost] = useState(initValues);
-  const [error, setError] = useState({});
+const PostCreate = () => {
+  const [post, setPosts] = useState(initValues);
+  const [error, setError] = useState(initErrors);
   const navigate = useNavigate();
 
   const onChange = (e) => {
-    setPost({ ...post, [e.target.name]: e.target.value });
+    // method 1
+    // setPosts({ ...post, [e.target.name]: e.target.value });
 
-    if (e.target.name === "userId")
-      error.name = e.target.value.length === 0 ? "UserId is required!" : "";
+    // method 2
+    const {name, value} = e.target;
+    setPosts({
+      ...post,
+      [name]: value
+    })
 
-    if (e.target.name === "tagId")
-      error.name = e.target.value.length === 0 ? "TagId is required!" : "";
+    // if (e.target.name === "description")
+    //   error.description =
+    //     e.target.value.length === 0 ? "Description is required!" : "";
+    // if (e.target.name === "userId")
+    //   error.userId = e.target.value.length === 0 ? "User ID is required!" : "";
 
-    if (e.target.name === "description")
-      error.description =
-        e.target.value.length === 0 ? "Topic's description is required!" : "";
+    // if (e.target.name === "tagId")
+    //   error.tagId = e.target.value.length === 0 ? "Tag ID ID is required!" : "";
+
+    // if (e.target.name === "createDate")
+    //   error.createDate =
+    //     e.target.value.length === 0 ? "CreateDate is required!" : "";
 
     setError({ ...error });
+
+    
   };
 
-  // preview image
-  const showImagePreview = (e) => {
+  // validate input
+  const validateInput = () => {
+    let validate = true;
+
+    error.description = post.description.length === 0 ? "Description is required!" : "";
+    error.userId = post.userId.length === 0 ? "User ID is required!" : "";
+    error.tagId = post.tagId.length === 0 ? "Tag ID is required!" : "";
+    error.createDate = post.createDate.length === 0 ? "Create date is required!" : "";
+
+    setError({ ...error });
+    validate = Object.values(error).every((x) => x === "");
+
+    return validate;
+  };
+
+  const showPreview = (e) => {
     if (e.target.files && e.target.files[0]) {
       let imageFile = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (x) => {
-        setPost({
+        setPosts({
+          ...post,
           imageFile,
           imageSrc: x.target.result,
         });
       };
       reader.readAsDataURL(imageFile);
+      // post form data
+    } else {
+      setPosts({
+        ...post,
+        imageFile: null,
+        imageSrc: defaultImageSrc,
+      });
     }
   };
 
-  // handle the submission from the form
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // onSubmit to handle
+  const onSubmit = (e) => {
+    e.preventDefault();
+    // if (validateInput) {
+      const formData = new FormData();
+      formData.append('description', post.description)
+      formData.append('userId', post.userId)
+      formData.append('tagId', post.tagId)
+      formData.append('createDate', post.createDate)
+      formData.append('imagePath', post.imagePath)
+      formData.append('imageFile', post.imageFile)
 
-    // if (validate()) {
+      // const url = `https://localhost:7178/api/posts`
+      // axios.post(url, formData).then((res) => {
+      //   console.log(res)
+      // })
 
+      createPost(formData)
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((err) => console.log(err.message));
+
+      setPosts(initValues);
     // }
-    // const formData = new FormData();
-    // formData.append("description", values.description);
-    // formData.append("userId", values.userId);
-    // formData.append("tagId", values.tagId);
-    // formData.append("imageFile", values.imageFile);
-    // formData.append("imagePath", values.imagePath);
 
-    createPost(post)
-     .then(res => {
-        navigate("/");
-     }) 
-     .catch(err => console.log(err))
-
-     setPost(initValues);
+    console.log(post)
   };
-
 
   return (
     <div className="px-5 max-w-7xl mx-auto container mt-20">
       <div className="mx-auto sm:px-4">
         <h2 className="text-center">Add new Topic</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <div className="mb-4">
             <label>Description</label>
             <input
               name="description"
               type="text"
-              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
+              value={post.description}
               onChange={(e) => onChange(e)}
+              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
+            {error.description && (
+              {/* <small className="text-sm text-red-500">
+                {error.description}
+              </small> */}
+            )}
           </div>
           <div className="mb-4">
-            <label>User Id</label>
+            <label>userId</label>
             <input
               name="userId"
               type="text"
-              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
+              value={post.userId}
               onChange={(e) => onChange(e)}
+              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
+            {/* {error.userId && (
+              <small className="text-sm text-red-500">{error.userId}</small>
+            )} */}
           </div>
           <div className="mb-4">
-            <label>Tag Id</label>
+            <label>tagId</label>
             <input
               name="tagId"
               type="text"
-              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
+              value={post.tagId}
               onChange={(e) => onChange(e)}
+              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
+            {/* {error.tagId && (
+              <small className="text-sm text-red-500">{error.tagId}</small>
+            )} */}
           </div>
-          <div className="">
-            <label>Image</label>
+          <div className="mb-4">
+            <label>Post date</label>
             <input
-              id="image-uploader"
+              type="text"
+              name="createDate"
+              value={post.createDate}
+              onChange={(e) => onChange(e)}
+              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
+            ></input>
+            {/* {error.createDate && (
+              <small className="text-sm text-red-500">
+                {error.createDate}
+              </small>
+            )} */}
+          </div>
+
+          {/* <div className="mb-4">
+            <label>Publish Day</label>
+            <DateTimePicker
+              onChange={setDate}
+              value={date}
+              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
+            />
+          </div> */}
+          <div className="form-group">
+            <input
               type="file"
               accept="image/*"
-              name="image"
-              onChange={(e) => onChange(e)}
+              onChange={(e) => showPreview(e)}
             />
           </div>
-          {/* <div className="mb-4">
-        <label>Publish Day</label>
-        <DateTimePicker
-          onChange={setDate}
-          value={date}
-          className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
-        />
-      </div> */}
-          <div>
-            <img src={post.imageSrc} alt="img" />
-          </div>
+          <img src={post.imageSrc} className="w-40 h-40" alt="pics" />
           <button
             type="submit"
             className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-blue-600 text-white hover:bg-blue-600"
@@ -146,4 +213,4 @@ const PostsCreate = () => {
   );
 };
 
-export default PostsCreate;
+export default PostCreate;
