@@ -1,10 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import images from "../assets/imgs";
 import SearchField from "./SearchField";
 
 const Nav = () => {
+  const { username, email, firstName } = useSelector((state) => state.user);
+  console.log(email);
+  console.log(firstName);
+  const dispatch = useDispatch();
+
   return (
     <>
       <nav className="shadow-md w-full fixed top-0 left-0">
@@ -57,10 +64,7 @@ const Nav = () => {
               <Link to={"/register"}>Register</Link>
             </div>
           </div>
-          <button onClick={() => {
-            localStorage.removeItem('token')
-          }} 
-          className="bg-orange-500">Logout</button>
+            <p>{username}</p>
         </div>
       </nav>
     </>

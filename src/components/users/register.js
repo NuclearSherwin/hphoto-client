@@ -1,107 +1,87 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import registerUser from "../redux/actions/register";
+import { createUser } from "../functions/user_crud";
 
 const initErrors = {
   email: "",
   firstName: "",
   lastName: "",
-  userName: "",
+  username: "",
+  password: "",
+  passwordConfirmation: "",
+};
+
+const initValues = {
+  email: "",
+  firstName: "",
+  lastName: "",
+  username: "",
   password: "",
   passwordConfirmation: "",
 };
 
 const Register = () => {
+  const [user, setUser] = useState(initValues);
+  const [error, setError] = useState(initErrors);
   const navigate = useNavigate();
+  // redux part
+  const dispatch = useDispatch();
 
-  const [email, setRegisterEmail] = useState("");
-  const [firstName, setRegisterFirstName] = useState("");
-  const [lastName, setRegisterLastName] = useState("");
-  const [userName, setRegisterUserName] = useState("");
-  const [password, setRegisterPassword] = useState("");
-  const [passwordConfirmation, setRegisterPasswordConfirmation] = useState("");
-  const [message, setMessage] = useState("");
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setUser({
+      ...user,
+      [name]: value,
+    });
 
-  // validate fields
-  const [emailError, setEmailError] = useState("");
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [userNameError, setUserNameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPassError, setConfirmPassError] = useState("");
+    setError({ ...error });
+  };
 
   const validate = () => {
-    const errors = {};
-    if (email === "") errors.email = "email is required";
-    if (firstName === "") errors.firstName = "First name is required";
-    if (lastName === "") errors.lastName = "Last name is required";
-    if (userName === "") errors.userName = "username is required";
-    if (password === "") errors.password = "Password is required";
-    if (passwordConfirmation === "")
-      errors.passwordConfirmation = "Confirm password does not match";
+    const validate = true;
+    error.email = user.email.length === 0 ? "email is required" : "";
+    error.firstName =
+      user.firstName.length === 0 ? "first name is required" : "";
+    error.lastName = user.lastName.length === 0 ? "last name is required" : "";
+    error.username = user.username.length === 0 ? "username is required" : "";
+    error.password = user.password.length === 0 ? "password is required" : "";
+    error.passwordConfirmation =
+      user.passwordConfirmation.length === 0
+        ? "password confirm not match"
+        : "";
 
-    return Object.keys(errors).length === 0 ? null : errors;
+    setError({ ...error });
+    // eslint-disable-next-line no-const-assign
+    validate = Object.values(error).every((x) => x === "");
+
+    return validate;
   };
 
-  let handleRegisterSubmit = async (e) => {
-    e.preventDefault();
-    // api
-    const api = "https://localhost:7178/api/Users/register";
-    try {
-      const errors = validate();
+  // submit data with redux
+  function handleSubmit(event) {
+    event.preventDefault();
 
-      if (errors) {
-        setEmailError(errors.email);
-        setFirstNameError(errors.firstName);
-        setLastNameError(errors.lastName);
-        setUserNameError(errors.userName);
-        setPasswordError(errors.password);
-        setConfirmPassError(errors.confirmPassError);
-      } else {
-        setEmailError("");
-        setFirstNameError("");
-        setLastNameError("");
-        setUserNameError("");
-        setPasswordError("");
-        setConfirmPassError("");
-      }
+    const formData = new FormData();
+    formData.append("email", user.email);
+    formData.append("firstName", user.firstName);
+    formData.append("lastName", user.lastName);
+    formData.append("username", user.username);
+    formData.append("password", user.password);
+    formData.append("passwordConfirmation", user.passwordConfirmation);
 
-      let res = await fetch(api, {
-        method: "POST",
-        body: JSON.stringify({
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          userName: userName,
-          password: password,
-          passwordConfirmation: passwordConfirmation,
-        }),
-        headers: {
-          Accept: "application/json",
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
+    const userData = Object.fromEntries(formData);
+    dispatch(registerUser(userData));
 
-      let resJson = await res.json();
-      console.log(resJson);
+    createUser(formData)
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => console.log(err.message));
+  }
 
-      if (res.status === 200) {
-        setRegisterEmail("");
-        setRegisterFirstName("");
-        setRegisterLastName("");
-        setRegisterUserName("");
-        setRegisterPassword("");
-        setRegisterPasswordConfirmation("");
-        setMessage("Sign up successfully!");
-        // window.location.reload();
-        navigate("/posts");
-      } else {
-        setMessage("Some error ocurred");
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
   return (
     <div className="bg-gray-100 flex flex-col items-center justify-center min-h-screen md:py-2">
       <main className="flex items-center w-full px-2 md:px-20">
@@ -132,64 +112,62 @@ const Register = () => {
             </div>
           </div> */}
           {/* Inputs */}
-          <form onSubmit={handleRegisterSubmit} className="text-black">
+          <form onSubmit={handleSubmit} className="text-black">
             <div className="flex flex-col items-center justify-center mt-2">
               <input
                 type="email"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
                 placeholder="Email"
                 name="email"
-                value={email}
-                onChange={(e) => setRegisterEmail(e.target.value)}
+                value={user.email}
+                onChange={(e) => onChange(e)}
               ></input>
-              <p className="text-white text-sm">{emailError}</p>
+              <p className="text-white text-sm">{error.email}</p>
               <input
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
                 type="text"
                 placeholder="First Name"
                 name="firstName"
-                value={firstName}
-                onChange={(e) => setRegisterFirstName(e.target.value)}
+                value={user.firstName}
+                onChange={(e) => onChange(e)}
               ></input>
-              <p className="text-white text-sm">{firstNameError}</p>
+              <p className="text-white text-sm">{error.firstName}</p>
               <input
                 type="text"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
                 placeholder="Last Name"
                 name="lastName"
-                value={lastName}
-                onChange={(e) => setRegisterLastName(e.target.value)}
+                value={user.lastName}
+                onChange={(e) => onChange(e)}
               ></input>
-              <p className="text-white text-sm">{lastNameError}</p>
+              <p className="text-white text-sm">{error.lastName}</p>
               <input
                 type="text"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
-                placeholder="UserName"
+                placeholder="username"
                 name="username"
-                value={userName}
-                onChange={(e) => setRegisterUserName(e.target.value)}
+                value={user.username}
+                onChange={(e) => onChange(e)}
               ></input>
-              <p className="text-white text-sm">{userNameError}</p>
+              <p className="text-white text-sm">{error.username}</p>
               <input
                 type="password"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
                 placeholder="Password"
                 name="password"
-                value={password}
-                onChange={(e) => setRegisterPassword(e.target.value)}
+                value={user.password}
+                onChange={(e) => onChange(e)}
               ></input>
-              <p className="text-white text-sm">{passwordError}</p>
+              <p className="text-white text-sm">{error.password}</p>
               <input
                 type="password"
                 className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
                 placeholder="Confirm password"
                 name="passwordConfirmation"
-                value={passwordConfirmation}
-                onChange={(e) =>
-                  setRegisterPasswordConfirmation(e.target.value)
-                }
+                value={user.passwordConfirmation}
+                onChange={(e) => onChange(e)}
               ></input>
-              <p className="text-white text-sm">{confirmPassError}</p>
+              <p className="text-white text-sm">{error.passwordConfirmation}</p>
               <button
                 type="submit"
                 className="rounded-2xl m-4 text-blue-400 bg-white w-3/5 px-4 py-2 shadow-md hover:text-white hover:bg-blue-400 transition duration-200 ease-in"
@@ -199,7 +177,9 @@ const Register = () => {
             </div>
           </form>
           <div className="inline-block border-[1px] justify-center w-20 border-white border-solid"></div>
-          <p className="text-white mt-4 text-sm hover:underline">Already have an account?</p>
+          <p className="text-white mt-4 text-sm hover:underline">
+            Already have an account?
+          </p>
           <Link
             to={"/login"}
             className="text-white mb-4 text-sm font-medium cursor-pointer hover:underline"
@@ -207,7 +187,7 @@ const Register = () => {
           >
             Sign In to your Account?
           </Link>
-          <div className="message">{message ? <p>{message}</p> : null} </div>
+          {/* <div className="message">{message ? <p>{message}</p> : null} </div> */}
         </div>
       </main>
     </div>

@@ -8,17 +8,17 @@ export const getAllUsers = async () =>
     await axios.get(`${BASE_URL}/users`);
 
 // get User by ID
-export const getUserById = async (UserId) => 
-    await axios.get(`${BASE_URL}/users/${UserId}`);
+export const getUserById = async (userId) => 
+    await axios.get(`${BASE_URL}/users/${userId}`);
 
 // create User
-export const createUser = async (Tag) => 
-    await axios.post(`${BASE_URL}/users/register`, Tag);
+export const createUser = async (user) => 
+    await axios.post(`${BASE_URL}/users/register`, user);
 
 // update a User
-export const updateUser = async (UserId, Tag) => 
-    await axios.put(`${BASE_URL}/users/${UserId}`, Tag);
+export const updateUser = async (userId, user) => 
+    await axios.put(`${BASE_URL}/users/${userId}`, user);
 
 // delete a User
-export const deleteUser = async (UserId) => 
-    await axios.delete(`${BASE_URL}/users/${UserId}`);
+export const deleteUser = async (userId) => 
+    await axios.delete(`${BASE_URL}/users/${userId}`);
