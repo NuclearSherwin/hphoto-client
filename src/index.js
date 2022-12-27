@@ -1,14 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { createStore } from "redux";
+import { Provider, useSelector } from "react-redux";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import "./index.css";
+import App from "./App";
+
+import allReducers from "./components/redux/reducers/index";
+const store = createStore(allReducers);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  <Provider store={store}>
     <Router>
       <App />
     </Router>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

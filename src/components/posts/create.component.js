@@ -175,7 +175,7 @@ const PostCreate = () => {
             )} */}
           </div>
           {/* -------------- */}
-          <div>
+          <div className="mb-4">
             <label htmlFor="topic-select">Select topic</label>
             <select
               name="tagId"
