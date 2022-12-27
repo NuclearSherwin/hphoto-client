@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import fetch from 'isomorphic-unfetch';
 import { deletePost, getAllPosts } from "../functions/post_crud";
 import Posts from "./posts";
 
@@ -37,7 +38,7 @@ const IndexComponent = () => {
         <td>{post.tagId}</td>
         <td>{post.description}</td>
         <td>
-          <img src={post.imgPath} alt="post-pic" />
+          <img src={post.imageSrc} alt="post-pic" />
         </td>
         <td>{post.createDate}</td>
         <td>
@@ -56,6 +57,10 @@ const IndexComponent = () => {
       </tr>
     ));
   };
+
+  
+
+  
 
   return (
     <>

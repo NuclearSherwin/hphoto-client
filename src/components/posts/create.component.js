@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPost } from "../functions/post_crud";
+import { getAllTags } from "../functions/tag_crud";
 
 const defaultImageSrc = null;
 
@@ -26,6 +27,9 @@ const initErrors = {
 const PostCreate = () => {
   const [post, setPosts] = useState(initValues);
   const [error, setError] = useState(initErrors);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [tags, setTags] = useState([]);
+
   const navigate = useNavigate();
 
   const onChange = (e) => {
@@ -33,11 +37,11 @@ const PostCreate = () => {
     // setPosts({ ...post, [e.target.name]: e.target.value });
 
     // method 2
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setPosts({
       ...post,
-      [name]: value
-    })
+      [name]: value,
+    });
 
     // if (e.target.name === "description")
     //   error.description =
@@ -53,18 +57,31 @@ const PostCreate = () => {
     //     e.target.value.length === 0 ? "CreateDate is required!" : "";
 
     setError({ ...error });
-
-    
   };
+
+  const onInit = () => {
+    getAllTags()
+      .then((res) => {
+        setTags(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    onInit();
+  }, []);
 
   // validate input
   const validateInput = () => {
     let validate = true;
 
-    error.description = post.description.length === 0 ? "Description is required!" : "";
+    error.description =
+      post.description.length === 0 ? "Description is required!" : "";
     error.userId = post.userId.length === 0 ? "User ID is required!" : "";
     error.tagId = post.tagId.length === 0 ? "Tag ID is required!" : "";
-    error.createDate = post.createDate.length === 0 ? "Create date is required!" : "";
+    error.createDate =
+      post.createDate.length === 0 ? "Create date is required!" : "";
 
     setError({ ...error });
     validate = Object.values(error).every((x) => x === "");
@@ -98,29 +115,29 @@ const PostCreate = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     // if (validateInput) {
-      const formData = new FormData();
-      formData.append('description', post.description)
-      formData.append('userId', post.userId)
-      formData.append('tagId', post.tagId)
-      formData.append('createDate', post.createDate)
-      formData.append('imagePath', post.imagePath)
-      formData.append('imageFile', post.imageFile)
+    const formData = new FormData();
+    formData.append("description", post.description);
+    formData.append("userId", post.userId);
+    formData.append("tagId", post.tagId);
+    formData.append("createDate", post.createDate);
+    formData.append("imagePath", post.imagePath);
+    formData.append("imageFile", post.imageFile);
 
-      // const url = `https://localhost:7178/api/posts`
-      // axios.post(url, formData).then((res) => {
-      //   console.log(res)
-      // })
+    // const url = `https://localhost:7178/api/posts`
+    // axios.post(url, formData).then((res) => {
+    //   console.log(res)
+    // })
 
-      createPost(formData)
-        .then((res) => {
-          navigate("/");
-        })
-        .catch((err) => console.log(err.message));
+    createPost(formData)
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => console.log(err.message));
 
-      setPosts(initValues);
+    setPosts(initValues);
     // }
 
-    console.log(post)
+    console.log(post);
   };
 
   return (
@@ -137,11 +154,12 @@ const PostCreate = () => {
               onChange={(e) => onChange(e)}
               className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
-            {error.description && (
-              {/* <small className="text-sm text-red-500">
+            {error.description &&
+              {
+                /* <small className="text-sm text-red-500">
                 {error.description}
-              </small> */}
-            )}
+              </small> */
+              }}
           </div>
           <div className="mb-4">
             <label>userId</label>
@@ -156,19 +174,25 @@ const PostCreate = () => {
               <small className="text-sm text-red-500">{error.userId}</small>
             )} */}
           </div>
-          <div className="mb-4">
-            <label>tagId</label>
-            <input
+          {/* -------------- */}
+          <div>
+            <label htmlFor="topic-select">Select topic</label>
+            <select
               name="tagId"
-              type="text"
+              id="topic-select"
               value={post.tagId}
               onChange={(e) => onChange(e)}
-              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
-            ></input>
+            >
+              {tags.map((topic) => (
+                <option value={topic.id}>{topic.description}</option>
+              ))}
+            </select>
             {/* {error.tagId && (
               <small className="text-sm text-red-500">{error.tagId}</small>
             )} */}
           </div>
+          {/* -------------- */}
+
           <div className="mb-4">
             <label>Post date</label>
             <input
@@ -200,7 +224,7 @@ const PostCreate = () => {
               onChange={(e) => showPreview(e)}
             />
           </div>
-          <img src={post.imageSrc} className="w-40 h-40" alt="pics" />
+          <img src={post.imageSrc} className="w-40 h-60" alt="pics" />
           <button
             type="submit"
             className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-blue-600 text-white hover:bg-blue-600"
