@@ -7,9 +7,9 @@ import images from "../assets/imgs";
 import SearchField from "./SearchField";
 
 const Nav = () => {
-  const { username, email, firstName } = useSelector((state) => state.user);
-  console.log(email);
-  console.log(firstName);
+  const user = useSelector((state) => state.user);
+  console.log(user.email);
+  console.log(user.firstName);
   const dispatch = useDispatch();
 
   return (
@@ -64,7 +64,7 @@ const Nav = () => {
               <Link to={"/register"}>Register</Link>
             </div>
           </div>
-            <p>{username}</p>
+            <p>{user.username ? user.username : "undefined"}</p>
         </div>
       </nav>
     </>

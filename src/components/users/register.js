@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import registerUser from "../redux/actions/register";
 import { createUser } from "../functions/user_crud";
+import {registerUser} from '../redux/actions/register'
 
 const initErrors = {
   email: "",
@@ -64,22 +64,22 @@ const Register = () => {
   function handleSubmit(event) {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append("email", user.email);
-    formData.append("firstName", user.firstName);
-    formData.append("lastName", user.lastName);
-    formData.append("username", user.username);
-    formData.append("password", user.password);
-    formData.append("passwordConfirmation", user.passwordConfirmation);
+    const formData = new FormData(event.target);
+      // formData.append("email", user.email);
+      // formData.append("firstName", user.firstName);
+      // formData.append("lastName", user.lastName);
+      // formData.append("username", user.username);
+      // formData.append("password", user.password);
+      // formData.append("passwordConfirmation", user.passwordConfirmation);
 
-    const userData = Object.fromEntries(formData);
-    dispatch(registerUser(userData));
+      createUser(formData)
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((err) => console.log(err.message));
 
-    createUser(formData)
-      .then((res) => {
-        navigate("/");
-      })
-      .catch((err) => console.log(err.message));
+      const userData = Object.fromEntries(formData);
+      dispatch(registerUser(userData));
   }
 
   return (
