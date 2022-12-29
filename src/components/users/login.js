@@ -1,73 +1,58 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../functions/user_crud";
+
+const initErrors = {
+  username: "",
+  password: "",
+};
+
+const initValues = {
+  username: "",
+  password: "",
+};
 
 const Login = () => {
+  const [user, setUser] = useState(initValues);
+  const [error, setError] = useState(initErrors);
+
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true);
-
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-
-    // validate fields
-    const [userNameError, setUserNameError] = useState("")
-    const [passwordError, setPasswordError] = useState("")
 
   // validate input
   const validate = () => {
-    const errors = {}
-    if (username === "")
-      errors.userName = "username is required!";
-    if (password === "")
-      errors.password = "Password is required!";
-    
+    let validate = true;
+    error.username = user.username.length === 0 ? "Username is required!" : "";
+    error.password = user.password.length === 0 ? "Password is required!" : "";
 
-    return Object.keys(errors).length === 0 ? null : errors;
-  }
+    setError({ ...error });
+    validate = Object.values(error).every((o) => o === "");
 
+    return validate;
+  };
+
+  // onchange
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setUser({
+      ...user,
+      [name]: value,
+    });
+
+    setError({ ...error });
+  };
 
   let handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    // api
-    const api = "https://localhost:7178/api/Users/Login";
-    try {
-      const errors = validate();
-
-      if (errors) {
-        setUserNameError(errors.userName)
-        setPasswordError(errors.password)
-      }
-      else {
-        setUserNameError("")
-        setPasswordError("")
-      }
-
-      // call api
-      let res = await fetch(api, {
-        method: "POST",
-        body: JSON.stringify({
-          userName: username,
-          password: password,
-        }),
-        headers: {
-          Accept: "application/json",
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-
-      let resJson = await res.json();
-
-      if (res.status === 200) {
-        setUserName("");
-        setPassword("");
-        setMessage("Sign up successfully!");
-        // window.location.reload();
-        navigate("/posts");
-      } else {
-        setMessage("Some error ocurred");
-      }
-    } catch (error) {
-      console.log(error.message);
+    if (validate()) {
+      e.preventDefault();
+      login(user)
+        .then((res) => {
+          setUser(initValues);
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err.message);
+          alert(err.message);
+        });
     }
   };
 
@@ -99,39 +84,48 @@ const Login = () => {
           {/* Inputs */}
 
           <form onSubmit={handleLoginSubmit}>
-          <div className="flex flex-col items-center justify-center">
-            <input
-              type="text"
-              className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUserName(e.target.value)}
-            ></input>
-            <p className="text-red-500 text-sm">{userNameError}</p>
-            <input
-              type="password"
-              className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></input>
-            <p className="text-red-500 text-sm">{passwordError}</p>
-            <button className="rounded-2xl m-2 text-white bg-blue-400 w-2/5 px-4 py-2 shadow-md hover:text-blue-400 hover:bg-white transition duration-200 ease-in">
-              Sign In
-            </button>
-          </div>
-        </form>
-        
-        {/* ----- */}
+            <div className="flex flex-col items-center justify-center">
+              <input
+                type="text"
+                name="username"
+                className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
+                placeholder="Username"
+                value={user.username}
+                onChange={(e) => onChange(e)}
+              ></input>
+              {error.username && (
+                <small className="text-red-500 text-sm">{error.username}</small>
+              )}
+              <input
+                type="password"
+                name="password"
+                className="rounded-2xl px-2 py-1 w-4/5 md:w-full border-[1px] border-blue-400 m-1 focus:shadow-md focus:border-pink-400 focus:outline-none focus:ring-0"
+                placeholder="Password"
+                value={user.password}
+                onChange={(e) => onChange(e)}
+              ></input>
+              {error.password && (
+                <small className="text-red-500 text-sm">{error.password}</small>
+              )}
+              <button className="rounded-2xl m-2 text-white bg-blue-400 w-2/5 px-4 py-2 shadow-md hover:text-blue-400 hover:bg-white transition duration-200 ease-in">
+                Sign In
+              </button>
+            </div>
+          </form>
+
+          {/* ----- */}
           <div className="inline-block border-[1px] justify-center w-20 border-blue-400 border-solid"></div>
-          <p className="text-blue-400 mt-4 text-sm hover:underline">Don't have an account?</p>
-          <Link to={'/register'}
+          <p className="text-blue-400 mt-4 text-sm hover:underline">
+            Don't have an account?
+          </p>
+          <Link
+            to={"/register"}
             className="text-blue-400 mb-4 text-sm font-medium cursor-pointer hover:underline"
-            onClick={() => setIsLogin(false)}
+            // onClick={() => setIsLogin(false)}
           >
             Create a New Account?
           </Link>
-          <div className="message">{message ? <p>{message}</p> : null} </div>
+          {/* <div className="message">{message ? <p>{message}</p> : null} </div> */}
         </div>
         {/* {isLogin ? <LoginForm /> : <SignUpForm />} */}
       </main>

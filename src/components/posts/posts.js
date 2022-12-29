@@ -1,6 +1,5 @@
 import { format } from "date-fns";
 import React from "react";
-
 const Posts = (props) => {
   // const formattedDate = `${
   //   props.createDate.getMonth() + 1
