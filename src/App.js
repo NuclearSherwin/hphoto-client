@@ -53,10 +53,10 @@ function App() {
           <Route path="/" index element={<GetImages />} />
           <Route path="/register" element={<Register />} />
           <Route path="/your-posts" element={<IndexComponent />} />
+          <Route path="/your-posts/create" element={<PostsCreate />} />
           <Route path="/topics" element={<TagIndex />} />
           <Route path="/topics-create" element={<TagCreate />} />
           <Route path="/topics-edit/:id" element={<TagEdit />} />
-          <Route path="/posts-create" element={<PostsCreate />} />
         </Routes>
         {/* <Post /> */}
         {/* <Login /> */}

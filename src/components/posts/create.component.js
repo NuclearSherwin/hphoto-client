@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { createPost } from "../functions/post_crud";
 import { getAllTags } from "../functions/tag_crud";
 
-const defaultImageSrc = null;
+let defaultImageSrc = "/img/default_upload_img.png";
 
 const initValues = {
   description: "",
@@ -13,7 +13,7 @@ const initValues = {
   createDate: "",
   imagePath: "",
   imageFile: null,
-  imageSrc: null,
+  imageSrc: defaultImageSrc,
 };
 
 const initErrors = {
@@ -44,18 +44,11 @@ const PostCreate = () => {
       [name]: value,
     });
 
-    // if (e.target.name === "description")
-    //   error.description =
-    //     e.target.value.length === 0 ? "Description is required!" : "";
-    // if (e.target.name === "userId")
-    //   error.userId = e.target.value.length === 0 ? "User ID is required!" : "";
-
-    // if (e.target.name === "tagId")
-    //   error.tagId = e.target.value.length === 0 ? "Tag ID ID is required!" : "";
-
-    // if (e.target.name === "createDate")
-    //   error.createDate =
-    //     e.target.value.length === 0 ? "CreateDate is required!" : "";
+    if (e.target.name === "description")
+      error.description =
+        e.target.value.length === 0 ? "Description is required!" : "";
+    if (e.target.name === "userId")
+      error.userId = e.target.value.length === 0 ? "User ID is required!" : "";
 
     setError({ ...error });
   };
@@ -87,12 +80,9 @@ const PostCreate = () => {
     error.description =
       post.description.length === 0 ? "Description is required!" : "";
     error.userId = post.userId.length === 0 ? "User ID is required!" : "";
-    error.tagId = post.tagId.length === 0 ? "Tag ID is required!" : "";
-    error.createDate =
-      post.createDate.length === 0 ? "Create date is required!" : "";
 
     setError({ ...error });
-    validate = Object.values(error).every((x) => x === "");
+    validate = Object.values(error).every((o) => o === "");
 
     return validate;
   };
@@ -122,42 +112,34 @@ const PostCreate = () => {
   // onSubmit to handle
   const onSubmit = (e) => {
     e.preventDefault();
-    // if (validateInput) {
 
+    if (validateInput()) {
+      const formData = new FormData();
+      formData.append("description", post.description);
+      formData.append("userId", post.userId);
+      formData.append("tagId", post.tagId);
+      // formData.append("createDate", post.createDate);
+      // get the current date time
+      post.createDate = currentDateTime;
+      formData.append("imagePath", post.imagePath);
+      formData.append("imageFile", post.imageFile);
 
-    const formData = new FormData();
-    formData.append("description", post.description);
-    formData.append("userId", post.userId);
-    formData.append("tagId", post.tagId);
-    // formData.append("createDate", post.createDate);
-    post.createDate = currentDateTime;
+      createPost(formData)
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((err) => console.log(err.message));
 
-    formData.append("imagePath", post.imagePath);
-    formData.append("imageFile", post.imageFile);
+      setPosts(initValues);
 
-
-
-    // const url = `https://localhost:7178/api/posts`
-    // axios.post(url, formData).then((res) => {
-    //   console.log(res)
-    // })
-
-    createPost(formData)
-      .then((res) => {
-        navigate("/");
-      })
-      .catch((err) => console.log(err.message));
-
-    setPosts(initValues);
-    // }
-
-    console.log(post);
+      console.log(post);
+    }
   };
 
   return (
     <div className="px-5 max-w-7xl mx-auto container mt-20">
       <div className="mx-auto sm:px-4">
-        <h2 className="text-center">Add new Topic</h2>
+        <h2 className="text-center">What's interesting thing to day?</h2>
         <form onSubmit={onSubmit}>
           <div className="mb-4">
             <label>Description</label>
@@ -168,12 +150,11 @@ const PostCreate = () => {
               onChange={(e) => onChange(e)}
               className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
-            {error.description &&
-              {
-                /* <small className="text-sm text-red-500">
+            {error.description && (
+              <small className="text-sm text-red-500">
                 {error.description}
-              </small> */
-              }}
+              </small>
+            )}
           </div>
           <div className="mb-4">
             <label>userId</label>
@@ -184,11 +165,10 @@ const PostCreate = () => {
               onChange={(e) => onChange(e)}
               className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
-            {/* {error.userId && (
+            {error.userId && (
               <small className="text-sm text-red-500">{error.userId}</small>
-            )} */}
+            )}
           </div>
-          {/* -------------- */}
           <div className="mb-4">
             <label htmlFor="topic-select">Select topic</label>
             <select
@@ -203,14 +183,9 @@ const PostCreate = () => {
                 </option>
               ))}
             </select>
-            {/* {error.tagId && (
-              <small className="text-sm text-red-500">{error.tagId}</small>
-            )} */}
           </div>
-          {/* -------------- */}
-
           <div className="mb-4">
-            <label>Post date</label>
+            {/* <label>Post date</label> */}
             <input
               type="hidden"
               name="createDate"
@@ -218,11 +193,6 @@ const PostCreate = () => {
               onChange={(e) => onChange(e)}
               className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
             ></input>
-            {/* {error.createDate && (
-              <small className="text-sm text-red-500">
-                {error.createDate}
-              </small>
-            )} */}
           </div>
           <div className="form-group">
             <input
@@ -236,7 +206,7 @@ const PostCreate = () => {
             type="submit"
             className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-blue-600 text-white hover:bg-blue-600"
           >
-            Submit
+            Upload
           </button>
         </form>
       </div>
