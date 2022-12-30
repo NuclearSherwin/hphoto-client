@@ -1,35 +1,26 @@
 import React from "react";
 
-// init for login
-const initState = {
-  isAuthenticated: false,
+// Reducer
+const initialState = {
   user: {},
-  error: "",
+  error: '',
 };
 
-// login
-function loginReducer(state = initState, action) {
+export default function loginReducer(state = initialState, action) {
   switch (action.type) {
-    case "LOGIN":
+    case 'LOGIN_SUCCESS':
       return {
         ...state,
-        isLoading: true,
-      };
-    case "LOGIN_SUCCESS":
-      return {
-        isAuthenticated: true,
         user: action.user,
-        error: "",
+        error: '',
       };
-    case "LOGIN_FAILURE":
+    case 'LOGIN_ERROR':
       return {
         ...state,
-        isLoading: false,
+        user: {},
         error: action.error,
       };
     default:
       return state;
   }
 }
-
-export default loginReducer;

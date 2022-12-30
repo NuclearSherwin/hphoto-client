@@ -29,6 +29,7 @@ const PostCreate = () => {
   const [error, setError] = useState(initErrors);
   const [selectedOption, setSelectedOption] = useState("");
   const [tags, setTags] = useState([]);
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   const navigate = useNavigate();
 
@@ -66,6 +67,13 @@ const PostCreate = () => {
         console.log(res.data);
       })
       .catch((err) => console.log(err));
+
+    // get current date time
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
   };
 
   useEffect(() => {
@@ -115,13 +123,19 @@ const PostCreate = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     // if (validateInput) {
+
+
     const formData = new FormData();
     formData.append("description", post.description);
     formData.append("userId", post.userId);
     formData.append("tagId", post.tagId);
-    formData.append("createDate", post.createDate);
+    // formData.append("createDate", post.createDate);
+    post.createDate = currentDateTime;
+
     formData.append("imagePath", post.imagePath);
     formData.append("imageFile", post.imageFile);
+
+
 
     // const url = `https://localhost:7178/api/posts`
     // axios.post(url, formData).then((res) => {
@@ -184,7 +198,9 @@ const PostCreate = () => {
               onChange={(e) => onChange(e)}
             >
               {tags.map((topic) => (
-                <option value={topic.id}>{topic.description}</option>
+                <option key={topic.id} value={topic.id}>
+                  {topic.description}
+                </option>
               ))}
             </select>
             {/* {error.tagId && (
@@ -196,7 +212,7 @@ const PostCreate = () => {
           <div className="mb-4">
             <label>Post date</label>
             <input
-              type="text"
+              type="hidden"
               name="createDate"
               value={post.createDate}
               onChange={(e) => onChange(e)}
@@ -208,15 +224,6 @@ const PostCreate = () => {
               </small>
             )} */}
           </div>
-
-          {/* <div className="mb-4">
-            <label>Publish Day</label>
-            <DateTimePicker
-              onChange={setDate}
-              value={date}
-              className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
-            />
-          </div> */}
           <div className="form-group">
             <input
               type="file"

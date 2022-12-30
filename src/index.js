@@ -1,14 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
+import thunk from 'redux-thunk';
 
 import "./index.css";
 import App from "./App";
 
 import allReducers from "./components/redux/reducers/index";
-const store = createStore(allReducers);
+const store = createStore(allReducers, applyMiddleware(thunk));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

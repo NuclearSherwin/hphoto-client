@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../functions/user_crud";
+
+import { loginUser } from "../redux/actions/login";
 
 const initErrors = {
   username: "",
@@ -14,9 +17,13 @@ const initValues = {
 
 const Login = () => {
   const [user, setUser] = useState(initValues);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(initErrors);
 
   const navigate = useNavigate();
+  // call redux
+  const dispatch = useDispatch();
 
   // validate input
   const validate = () => {
@@ -38,14 +45,21 @@ const Login = () => {
       [name]: value,
     });
 
+    setUsername(e.target.value);
+    setPassword(e.target.value);
     setError({ ...error });
   };
 
   let handleLoginSubmit = async (e) => {
     if (validate()) {
       e.preventDefault();
+      // const formData = new FormData(e.target);
+
+      // push to db
       login(user)
         .then((res) => {
+          // save to local store of redux
+          dispatch(loginUser(username, password));
           setUser(initValues);
           navigate("/");
         })
