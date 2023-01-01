@@ -9,14 +9,8 @@ import SearchField from "./SearchField";
 const Nav = () => {
   // get user data from redux
   const user = useSelector((state) => state.user);
-  const userLoginData = useSelector((state) => state.login.user);
 
-  console.log(user.email);
-  console.log(user.firstName);
-  console.log(user.username);
-
-  // log username after login
-  console.log(userLoginData.username);
+  
 
   const dispatch = useDispatch();
 

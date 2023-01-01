@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../functions/user_crud";
-
-import { loginUser } from "../redux/actions/login";
+import {loginSuccess} from '../redux/actions/user';
 
 const initErrors = {
   username: "",
@@ -17,8 +16,6 @@ const initValues = {
 
 const Login = () => {
   const [user, setUser] = useState(initValues);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState(initErrors);
 
   const navigate = useNavigate();
@@ -45,8 +42,6 @@ const Login = () => {
       [name]: value,
     });
 
-    setUsername(e.target.value);
-    setPassword(e.target.value);
     setError({ ...error });
   };
 
@@ -59,7 +54,7 @@ const Login = () => {
       login(user)
         .then((res) => {
           // save to local store of redux
-          dispatch(loginUser(username, password));
+          dispatch(loginSuccess(user));
           setUser(initValues);
           navigate("/");
         })

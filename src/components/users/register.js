@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "../functions/user_crud";
-import { call, put, takeLatest } from "redux-saga/effects";
 import { registerUser } from "../redux/actions/register";
 
 const initErrors = {

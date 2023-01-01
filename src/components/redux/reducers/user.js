@@ -1,27 +1,24 @@
 import React from "react";
-import { call, put, takeLatest } from 'redux-saga/effects';
-const REGISTER_USER = 'REGISTER_USER';
-const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
 
+const initialState = {
+  id: 0,
+  userName: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  token:
+    "",
+};
 
-
-// Reducer to handle the REGISTER_USER action
-export function userReducer(state = {}, action) {
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case REGISTER_USER_SUCCESS:
-      // save the user data to local store
-      localStorage.setItem("user", JSON.stringify(action.payload));
-      return {
-        ...state,
-        user: action.payload,
-      };
-
+    case "LOGINSUCCESS":
+      return { ...state, ...action.payload };
+    case "LOGOUTSUCCESS":
+      return { ...state, ...initialState };
     default:
       return state;
   }
-}
-
-
-
+};
 
 export default userReducer;
