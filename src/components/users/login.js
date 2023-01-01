@@ -56,12 +56,15 @@ const Login = () => {
           // save to local store of redux
           dispatch(loginSuccess(user));
           setUser(initValues);
-          navigate("/");
+          navigate("/your-posts");
+          alert("login successfully!");
         })
         .catch((err) => {
           console.log(err.message);
           alert(err.message);
         });
+      
+      setUser(initValues)
     }
   };
 

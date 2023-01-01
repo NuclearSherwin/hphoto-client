@@ -1,22 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import images from "../assets/imgs";
 import SearchField from "./SearchField";
+import { logoutSuccess } from "./redux/actions/user";
 
 const Nav = () => {
+  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState(false);
   // get user data from redux
   const user = useSelector((state) => state.user);
 
-  
-
   const dispatch = useDispatch();
+
+  const logout = () => {
+    if (dispatch(logoutSuccess())) {
+      navigate("/your-posts");
+      setIsLogin(false);
+      alert("logout successfully!");
+    }
+  };
 
   return (
     <>
-      <nav className="shadow-md w-full fixed top-0 left-0">
+      <nav className="shadow-md w-full fixed top-0 left-0 z-50">
         <div className="md:flex bg-white py-2 items-center justify-around">
           <div className="sm:flex flex">
             <span className="">
@@ -61,12 +70,29 @@ const Nav = () => {
           <SearchField />
           {/* End search part */}
 
-          <div className="hover:bg-gray-200 p-1 rounded w-15 mt-2 md:m-0">
-            <div id="signInDiv">
-              <Link to={"/register"}>Register</Link>
-            </div>
-          </div>
-          <p>{user.username ? user.username : "undefined"}</p>
+          <p>
+            {user.username ? (
+              user.username
+            ) : (
+              <div className="hover:bg-gray-200 p-1 rounded w-15 mt-2 md:m-0">
+                <div id="signInDiv">
+                  <Link to={"/register"}>Register</Link>
+                </div>
+              </div>
+            )}
+          </p>
+
+          {user.username ? (
+            <button
+              onClick={() => logout()}
+              className="bg-red-500 hover:bg-red-700 text-white rounded px-2 py-1"
+            >
+             
+              Logout
+            </button>
+          ) : 
+           <p></p>
+          }
         </div>
       </nav>
     </>

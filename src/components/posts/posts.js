@@ -10,8 +10,6 @@ const Posts = (props) => {
   // set hover
   const [hover, setHover] = useState(false);
 
-  console.log(timeAgo);
-
   return (
     <>
       <article 
