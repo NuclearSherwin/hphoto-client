@@ -1,15 +1,22 @@
 import { format } from "date-fns";
 import React from "react";
+import moment from 'moment';
+
+// other codes
+
 const Posts = (props) => {
-  // const formattedDate = `${
-  //   props.createDate.getMonth() + 1
-  // }/${props.createDate.getDate()}/${props.createDate.getFullYear()} ${props.createDate.getHours()}:${props.createDate.getMinutes()}:${props.createDate.getSeconds()}`;
+  let datePosted = props.createdDate;
+  const timeAgo = moment(datePosted).fromNow();
+
+  console.log(timeAgo);
+
   return (
     <>
       <article className="shadow-md bg-white rounded-3xl p-5">
         <h1 className="text-slate-600 text-lg font-bold">
           {props.description}
         </h1>
+        <p>{timeAgo}</p>
         <img
           src={props.imageSrc}
           alt="pic"

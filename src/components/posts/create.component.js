@@ -27,11 +27,10 @@ const initErrors = {
 const PostCreate = () => {
   const [post, setPosts] = useState(initValues);
   const [error, setError] = useState(initErrors);
-  const [selectedOption, setSelectedOption] = useState("");
   const [tags, setTags] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-
   const navigate = useNavigate();
+
 
   const onChange = (e) => {
     // method 1
@@ -113,13 +112,13 @@ const PostCreate = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (validateInput()) {
       const formData = new FormData();
       formData.append("description", post.description);
       formData.append("userId", post.userId);
       formData.append("tagId", post.tagId);
       // formData.append("createDate", post.createDate);
       // get the current date time
+      
       post.createDate = currentDateTime;
       formData.append("imagePath", post.imagePath);
       formData.append("imageFile", post.imageFile);
@@ -133,7 +132,7 @@ const PostCreate = () => {
       setPosts(initValues);
 
       console.log(post);
-    }
+
   };
 
   return (
@@ -204,7 +203,7 @@ const PostCreate = () => {
           <img src={post.imageSrc} className="w-40 h-60" alt="pics" />
           <button
             type="submit"
-            className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-blue-600 text-white hover:bg-blue-600"
+            className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-blue-600 text-white hover:bg-blue-700"
           >
             Upload
           </button>
