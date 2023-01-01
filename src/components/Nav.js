@@ -48,8 +48,8 @@ const Nav = () => {
               </Link>
             </li>
             <li className="rounded hover:bg-gray-200 ml-1">
-              <Link className="p-3" to="most-download">
-                Most download
+              <Link className="p-3" to="/your-posts/create">
+                Create
               </Link>
             </li>
             <li className="rounded hover:bg-gray-200 ml-1">

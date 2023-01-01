@@ -75,7 +75,7 @@ const IndexComponent = () => {
               className="font-bold text-3xl md:text-2xl text-slate-800 lg:text-4xl my-10 
           lg:mt-20 lg:mb-20 capitalize"
             >
-              Your posts
+              Your published
             </h1>
 
             <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">

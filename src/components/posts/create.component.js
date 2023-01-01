@@ -112,39 +112,40 @@ const PostCreate = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-      const formData = new FormData();
-      formData.append("description", post.description);
-      formData.append("userId", post.userId);
-      formData.append("tagId", post.tagId);
-      // formData.append("createDate", post.createDate);
-      // get the current date time
-      
-      post.createDate = currentDateTime;
-      formData.append("imagePath", post.imagePath);
-      formData.append("imageFile", post.imageFile);
+    const formData = new FormData();
+    formData.append("description", post.description);
+    formData.append("userId", post.userId);
+    formData.append("tagId", post.tagId);
+    // formData.append("createDate", post.createDate);
+    // get the current date time
 
-      createPost(formData)
-        .then((res) => {
-          navigate("/");
-        })
-        .catch((err) => console.log(err.message));
+    post.createDate = currentDateTime;
+    formData.append("imagePath", post.imagePath);
+    formData.append("imageFile", post.imageFile);
 
-      setPosts(initValues);
+    createPost(formData)
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => console.log(err.message));
 
-      console.log(post);
+    setPosts(initValues);
 
+    console.log(post);
   };
 
   return (
     <div className="px-5 max-w-7xl mx-auto container mt-20">
+      <div className="flex">
       <div className="mx-auto sm:px-4">
         <h2 className="text-center">What's interesting thing to day?</h2>
         <form onSubmit={onSubmit}>
           <div className="mb-4">
-            <label>Description</label>
+            <label className="text-sm">Description</label>
             <input
               name="description"
               type="text"
+              placeholder="Add title"
               value={post.description}
               onChange={(e) => onChange(e)}
               className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
@@ -156,10 +157,11 @@ const PostCreate = () => {
             )}
           </div>
           <div className="mb-4">
-            <label>userId</label>
+            <label className="text-sm">userId</label>
             <input
               name="userId"
               type="text"
+              placeholder="Add user ID"
               value={post.userId}
               onChange={(e) => onChange(e)}
               className="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 border border-gray-200 rounded"
@@ -169,19 +171,24 @@ const PostCreate = () => {
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="topic-select">Select topic</label>
-            <select
-              name="tagId"
-              id="topic-select"
-              value={post.tagId}
-              onChange={(e) => onChange(e)}
-            >
-              {tags.map((topic) => (
-                <option key={topic.id} value={topic.id}>
-                  {topic.description}
-                </option>
-              ))}
-            </select>
+            <label htmlFor="topic-select" className="text-sm">
+              Select topic
+            </label>
+            <div>
+              <select
+                name="tagId"
+                id="topic-select"
+                className="p-2 rounded"
+                value={post.tagId}
+                onChange={(e) => onChange(e)}
+              >
+                {tags.map((topic) => (
+                  <option key={topic.id} value={topic.id}>
+                    {topic.description}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="mb-4">
             {/* <label>Post date</label> */}
@@ -200,14 +207,18 @@ const PostCreate = () => {
               onChange={(e) => showPreview(e)}
             />
           </div>
-          <img src={post.imageSrc} className="w-40 h-60" alt="pics" />
           <button
             type="submit"
-            className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-blue-600 text-white hover:bg-blue-700"
+            className="mt-5 rounded-lg inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline bg-blue-600 text-white hover:bg-blue-700"
           >
             Upload
           </button>
         </form>
+      </div>
+      {/* image */}
+      <div>
+        <img src={post.imageSrc} alt="" style={{width: "666.667px", width: "375px;"}} />
+      </div>
       </div>
     </div>
   );
