@@ -54,7 +54,7 @@ const Login = () => {
       login(user)
         .then((res) => {
           // save to local store of redux
-          dispatch(loginSuccess(user));
+          dispatch(loginSuccess(res.data));
           setUser(initValues);
           navigate("/your-posts");
           alert("login successfully!");
@@ -82,18 +82,6 @@ const Login = () => {
           <h2 className="p-3 text-3xl font-bold text-pink-400">HPhoto</h2>
           <div className="inline-block border-[1px] justify-center w-20 border-blue-400 border-solid"></div>
           <h3 className="text-xl font-semibold text-blue-400 pt-2">Sign In!</h3>
-          {/* <div className="flex space-x-2 m-4 items-center justify-center">
-            <div className="socialIcon">
-              <i class="fa-brands fa-facebook fa-2xl"></i>
-            </div>
-            <div className="socialIcon">
-              <i class="fa-brands fa-github fa-2xl"></i>
-            </div>
-            <div className="socialIcon">
-              <i class="fa-brands fa-google fa-2xl"></i>
-            </div>
-          </div> */}
-          {/* Inputs */}
 
           <form onSubmit={handleLoginSubmit}>
             <div className="flex flex-col items-center justify-center">

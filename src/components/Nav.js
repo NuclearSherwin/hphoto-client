@@ -71,8 +71,8 @@ const Nav = () => {
           {/* End search part */}
 
           <p>
-            {user.username ? (
-              user.username
+            {user.firstName ? (
+              user.firstName
             ) : (
               <div className="hover:bg-gray-200 p-1 rounded w-15 mt-2 md:m-0">
                 <div id="signInDiv">
@@ -81,18 +81,6 @@ const Nav = () => {
               </div>
             )}
           </p>
-
-          {user.username ? (
-            <button
-              onClick={() => logout()}
-              className="bg-red-500 hover:bg-red-700 text-white rounded px-2 py-1"
-            >
-             
-              Logout
-            </button>
-          ) : 
-           <p></p>
-          }
         </div>
       </nav>
     </>

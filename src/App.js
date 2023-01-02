@@ -42,7 +42,7 @@ function App() {
   console.log(response);
 
   return (
-    <div>
+    <div className="pb-72">
       <ImageContext.Provider value={value}>
         {/* Navbar */}
         <Nav />
