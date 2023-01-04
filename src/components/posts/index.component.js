@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import fetch from 'isomorphic-unfetch';
+import fetch from "isomorphic-unfetch";
 import { deletePost, getAllPosts } from "../functions/post_crud";
 import Posts from "./posts";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const IndexComponent = () => {
   const [posts, setPosts] = useState([]);
+  const searchResult = useSelector((state) => state.search);
+  const user = useSelector((state) => state.user);
+
+  let queryResult = searchResult.query;
+
+  const filteredPosts = posts.filter((post) => post.userId === user.id);
+
   useEffect(() => {
+    // fetchPost();
     onInit();
   }, []);
+
+  // const fetchPost = async () => {
+  //   const response = await axios(
+  //     `https://localhost:7178/api/posts/1028`
+  //   );
+
+  //   setPosts(response);
+  // };
 
   // init values
   const onInit = () => {
@@ -58,10 +76,6 @@ const IndexComponent = () => {
     ));
   };
 
-  
-
-  
-
   return (
     <>
       <div className="mt-16">
@@ -79,10 +93,11 @@ const IndexComponent = () => {
             </h1>
 
             <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
-              {posts.map((post) => (
+              {filteredPosts.map((post) => (
                 <Posts key={post.id} {...post} />
               ))}
             </div>
+            <div></div>
           </section>
         )}
       </div>

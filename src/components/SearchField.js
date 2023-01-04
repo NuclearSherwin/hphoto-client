@@ -1,24 +1,19 @@
 import { useContext } from "react";
 import { useState, useEffect } from "react";
-import {ImageContext} from "../App";
+import { ImageContext } from "../App";
+import { useDispatch } from "react-redux";
+import { search } from "./redux/actions/search";
 
 export default function SearchField() {
-  const [searchValue, setSearchValue] = useState("");
-  const { fetchData, setSearchImage }  = useContext(ImageContext);
+  const dispatch = useDispatch();
 
-  const handleInputChange = (e) => {
-    setSearchValue(e.target.value);
-  };
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      fetchData(
-        `search/photos?page=1&query=${searchValue}&client_id=${process.env.REACT_APP_UNFLASH_API_KEY}`
-      );
-      setSearchValue("");
-      setSearchImage(searchValue)
+  function handleSubmit(event) {
+    if (event.key === "Enter") {
+      const query = event.target.value;
+      dispatch(search(query));
     }
-  };
+  }
 
   return (
     <>
@@ -27,9 +22,10 @@ export default function SearchField() {
           <input
             placeholder="Search"
             type="search"
-            value={searchValue}
-            onChange={handleInputChange}
-            onKeyDown={handleSearch}
+            name="search"
+            // value={searchTerm}
+            onKeyDown={(e) => handleSubmit(e)}
+            // onChange={(e) => setSearchValue(e.target.value)}
             className="bg-gray-200 rounded-full px-12 py-2 outline-none w-96"
           />
           <svg
