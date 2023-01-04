@@ -11,6 +11,7 @@ import TagCreate from "./components/tags/tag_create";
 import TagEdit from "./components/tags/tag_edit";
 import TagIndex from "./components/tags/tag_index";
 import PostsCreate from "./components/posts/create.component";
+import UserProfile from "./components/users/user.profile";
 
 // create context
 export const ImageContext = createContext();
@@ -57,6 +58,7 @@ function App() {
           <Route path="/topics" element={<TagIndex />} />
           <Route path="/topics-create" element={<TagCreate />} />
           <Route path="/topics-edit/:id" element={<TagEdit />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Routes>
         {/* <Post /> */}
         {/* <Login /> */}

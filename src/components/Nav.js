@@ -72,7 +72,7 @@ const Nav = () => {
 
           <p>
             {user.firstName ? (
-              user.firstName
+              <Link className="hover:underline" to={"/profile"}>{user.firstName}</Link>
             ) : (
               <div className="hover:bg-gray-200 p-1 rounded w-15 mt-2 md:m-0">
                 <div id="signInDiv">
