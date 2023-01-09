@@ -41,7 +41,7 @@ const Nav = () => {
           </div>
           <ul className="lg:flex items-center text-start hidden">
             <li className="rounded hover:bg-gray-200 ml-1">
-              <Link className="p-3" to="/posts">
+              <Link className="p-3" to="/">
                 All
               </Link>
             </li>

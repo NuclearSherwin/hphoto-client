@@ -1,8 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logoutSuccess } from "../redux/actions/user";
 
 const UserProfile = () => {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    try {
+      dispatch(logoutSuccess());
+      navigate('/');
+    } catch (error) {
+      console.log(error.message);
+      alert(error.message);
+    }
+  }
 
   return (
     <div className="bg-gray-200 p-6 rounded-lg shadow-lg mt-40">
@@ -28,6 +42,11 @@ const UserProfile = () => {
       </div>
       <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
         Follow
+      </button>
+      <button
+      onClick={() => logout()}
+       className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline-red">
+        Logout
       </button>
     </div>
   );
