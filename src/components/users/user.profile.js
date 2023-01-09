@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logoutSuccess } from "../redux/actions/user";
 
 const UserProfile = () => {
@@ -11,12 +11,12 @@ const UserProfile = () => {
   const logout = () => {
     try {
       dispatch(logoutSuccess());
-      navigate('/');
+      navigate("/");
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
-  }
+  };
 
   return (
     <div className="bg-gray-200 p-6 rounded-lg shadow-lg mt-40">
@@ -43,9 +43,16 @@ const UserProfile = () => {
       <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
         Follow
       </button>
+      <Link
+        to={"/user-update/" + user.id}
+        className="bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-yellow-600 focus:outline-none focus:shadow-outline-yellow"
+      >
+        Update
+      </Link>
       <button
-      onClick={() => logout()}
-       className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline-red">
+        onClick={() => logout()}
+        className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline-red"
+      >
         Logout
       </button>
     </div>

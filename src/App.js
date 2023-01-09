@@ -12,6 +12,7 @@ import TagEdit from "./components/tags/tag_edit";
 import TagIndex from "./components/tags/tag_index";
 import PostsCreate from "./components/posts/create.component";
 import UserProfile from "./components/users/user.profile";
+import UserUpdate from "./components/users/user.update";
 
 // create context
 export const ImageContext = createContext();
@@ -59,6 +60,7 @@ function App() {
           <Route path="/topics-create" element={<TagCreate />} />
           <Route path="/topics-edit/:id" element={<TagEdit />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/user-update/:id" element={<UserUpdate />} />
         </Routes>
         {/* <Post /> */}
         {/* <Login /> */}
